@@ -1,0 +1,15 @@
+Injectable application config
+Figure out how to use Argonautica's Hasher/Verifier as Actix Data params
+    Data only impls Deref, not DerefMut unfortunately
+    We can't wrap in a Cell because Hasher/Verifier isn't Copy either
+User sessions
+    Are we handling this in a sane way??
+    Differentiate between no-session and an invalid session
+Caching
+Where to put "view" structs
+Separate DB logic from controller
+Logging
+Error handling
+Server-Sent Events
+    Real-time updates for posting
+Maybe use handlers?
