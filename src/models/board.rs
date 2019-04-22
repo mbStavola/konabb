@@ -66,7 +66,7 @@ impl Board {
     }
 }
 
-#[derive(Deserialize, FromPrimitive, ToPrimitive, Serialize)]
+#[derive(Debug, Deserialize, FromPrimitive, PartialEq, ToPrimitive, Serialize)]
 pub enum BoardType {
     All = 0,
     Anonymous = 1,

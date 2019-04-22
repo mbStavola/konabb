@@ -1,11 +1,8 @@
 use actix_web::{
-    web::{Data, Json, Path},
     HttpResponse,
+    web::{Data, Json, Path},
 };
 use chrono::Duration;
-use diesel::{r2d2::ConnectionManager as DieselConnectionManager, MysqlConnection};
-use r2d2::Pool;
-use r2d2_redis::RedisConnectionManager;
 use redis::Commands;
 use serde_derive::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -13,8 +10,16 @@ use validator::Validate;
 use validator_derive::Validate;
 
 use crate::{
-    dao, models,
-    util::{self, JwtSession, LoginClaims, Result},
+    dao,
+    models,
+    util::{
+        self,
+        JwtSession,
+        LoginClaims,
+        CachePool,
+        DbPool,
+        Result,
+    },
 };
 
 #[derive(Deserialize, Serialize, Validate)]
@@ -27,7 +32,7 @@ pub struct UserSubmission {
 
 /// User create
 pub fn create_user(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
+    db_pool: Data<DbPool>,
     submission: Json<UserSubmission>,
 ) -> Result<HttpResponse> {
     if submission.validate().is_err() {
@@ -60,8 +65,8 @@ pub fn create_user(
 
 /// User update
 pub fn update_user(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
-    cache_pool: Data<Pool<RedisConnectionManager>>,
+    db_pool: Data<DbPool>,
+    cache_pool: Data<CachePool>,
     session: JwtSession<LoginClaims>,
     submission: Json<models::UserUpdate>,
 ) -> Result<HttpResponse> {
@@ -97,7 +102,7 @@ pub fn update_user(
 
 /// User details
 pub fn get_user(
-    pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
+    pool: Data<DbPool>,
     id: Path<Uuid>,
 ) -> Result<HttpResponse> {
     let db_conn = &pool.get().unwrap();
@@ -130,8 +135,8 @@ pub struct LoginForm {
 
 /// User login
 pub fn login(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
-    cache_pool: Data<Pool<RedisConnectionManager>>,
+    db_pool: Data<DbPool>,
+    cache_pool: Data<CachePool>,
     submission: Json<LoginForm>,
 ) -> Result<HttpResponse> {
     let db_conn = &db_pool.get().unwrap();

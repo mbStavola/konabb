@@ -8,3 +8,10 @@ pub fn create_thread(conn: &MysqlConnection, thread: models::Thread) {
         .execute(conn)
         .expect("pls work");
 }
+
+pub fn get_thread(conn: &MysqlConnection, t_thread_id: &String) -> Option<models::Thread> {
+    return threads.filter(thread_id.eq(t_thread_id))
+        .first::<models::Thread>(conn)
+        .optional()
+        .expect("")
+}

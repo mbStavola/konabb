@@ -79,7 +79,6 @@ where
     #[inline]
     fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
         use actix_web::http::header::{HeaderMap, HeaderValue, AUTHORIZATION};
-        use actix_web::HttpMessage;
 
         let headers: &HeaderMap = req.headers();
 

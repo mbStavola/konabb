@@ -1,10 +1,7 @@
 use actix_web::{
-    web::{Data, Json},
     HttpResponse,
+    web::{Data, Json},
 };
-use diesel::{r2d2::ConnectionManager as DieselConnectionManager, MysqlConnection};
-use r2d2::Pool;
-use r2d2_redis::RedisConnectionManager;
 use redis::Commands;
 use serde_derive::{Deserialize, Serialize};
 use validator::Validate;
@@ -12,8 +9,15 @@ use validator_derive::Validate;
 
 use crate::{
     dao,
-    models::{Post, BoardType},
-    util::{self, JwtSession, LoginClaims, Result},
+    models::{BoardType, Post},
+    util::{
+        self,
+        JwtSession,
+        LoginClaims,
+        CachePool,
+        DbPool,
+        Result,
+    },
 };
 
 #[derive(Deserialize, Serialize, Validate)]
@@ -24,8 +28,8 @@ pub struct PostSubmission {
 }
 
 pub fn create_post(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
-    cache_pool: Data<Pool<RedisConnectionManager>>,
+    db_pool: Data<DbPool>,
+    cache_pool: Data<CachePool>,
     session: Option<JwtSession<LoginClaims>>,
     submission: Json<PostSubmission>,
 ) -> Result<HttpResponse> {
@@ -49,7 +53,7 @@ pub fn create_post(
                     return Ok(HttpResponse::Unauthorized().finish());
                 }
                 user_id
-            },
+            }
             BoardType::Verified => return Ok(HttpResponse::Unauthorized().finish()),
         };
 
@@ -67,16 +71,16 @@ pub fn create_post(
 }
 
 pub fn update_post(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
-    cache_pool: Data<Pool<RedisConnectionManager>>,
+    db_pool: Data<DbPool>,
+    cache_pool: Data<CachePool>,
     session: JwtSession<LoginClaims>,
 ) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().finish())
 }
 
 pub fn delete_post(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
-    cache_pool: Data<Pool<RedisConnectionManager>>,
+    db_pool: Data<DbPool>,
+    cache_pool: Data<CachePool>,
     session: JwtSession<LoginClaims>,
 ) -> Result<HttpResponse> {
     Ok(HttpResponse::Ok().finish())

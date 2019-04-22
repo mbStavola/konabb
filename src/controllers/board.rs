@@ -2,9 +2,7 @@ use actix_web::{
     web::{Data, Json},
     HttpResponse,
 };
-use diesel::{r2d2::ConnectionManager as DieselConnectionManager, MysqlConnection};
 use num::FromPrimitive;
-use r2d2::Pool;
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 use validator_derive::Validate;
@@ -12,7 +10,7 @@ use validator_derive::Validate;
 use crate::{
     dao,
     models::{Board, BoardType},
-    util::Result,
+    util::{DbPool, Result},
 };
 
 #[derive(Deserialize, Serialize, Validate)]
@@ -27,7 +25,7 @@ pub struct BoardSubmission {
 }
 
 pub fn create_board(
-    db_pool: Data<Pool<DieselConnectionManager<MysqlConnection>>>,
+    db_pool: Data<DbPool>,
     submission: Json<BoardSubmission>,
 ) -> Result<HttpResponse> {
     if submission.validate().is_err() {

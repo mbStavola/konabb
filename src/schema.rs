@@ -187,4 +187,9 @@ joinable!(posts -> users (user_id));
 joinable!(threads -> boards (board_id));
 joinable!(threads -> users (user_id));
 
-allow_tables_to_appear_in_same_query!(boards, posts, threads, users,);
+allow_tables_to_appear_in_same_query!(
+    boards,
+    posts,
+    threads,
+    users,
+);

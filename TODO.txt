@@ -7,9 +7,10 @@ User sessions
     Differentiate between no-session and an invalid session
 Caching
 Where to put "view" structs
-Separate DB logic from controller
 Logging
 Error handling
 Server-Sent Events
     Real-time updates for posting
 Maybe use handlers?
+Get rid of all these clone/to_owned/to_string calls
+    I hate this so much
