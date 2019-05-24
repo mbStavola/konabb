@@ -1,4 +1,4 @@
-FROM rust:1.33 AS builder
+FROM rust:1.35 AS builder
 
 # Copy dependency information only.
 WORKDIR /home/
