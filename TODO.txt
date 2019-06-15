@@ -5,6 +5,10 @@ Figure out how to use Argonautica's Hasher/Verifier as Actix Data params
 User sessions
     Are we handling this in a sane way??
     Differentiate between no-session and an invalid session
+PMs
+    I don't like the fact that you can store "private" messages in the DB
+    I wonder if there is a way to do some sort of E2E encryption
+        Maybe give users the option to 'encrypt' conversations that get unlocked with a read-time password
 Caching
 Where to put "view" structs
 Logging

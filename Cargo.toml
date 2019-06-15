@@ -24,7 +24,7 @@ sentry-actix = "0.15.5"
 serde_derive = "1.0.91"
 envconfig_derive = "0.5.1"
 validator_derive = "0.8.0"
-actix-web = "1.0.0-rc"
+actix-web = "1.0.0"
 chrono = { version = "0.4.6", features = ["serde"] }
 uuid = { version = "0.7.4", features = ["serde", "v4"] }
 pulldown-cmark = { version = "0.5.1", default-features = false }
